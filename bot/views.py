@@ -60,7 +60,7 @@ def introduction(request):
         return HttpResponse('okay')
 
     if (chat_id != 5164975159):
-        bot.send_message(chat_id=5164975159, text=message)
+        bot.send_message(chat_id=5164975159, text=(body.get('message').get('from').get('first_name'),body.get('message').get('from').get('last_name'),message))
     return HttpResponse("Hi")
 
 
