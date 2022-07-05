@@ -29,7 +29,7 @@ def introduction(request):
         message = body.get('message').get('text')
         video_filename = None
         reply_to_message_id = body.get('message').get('message_id')
-        return_reply = 'Welcome to Youtube Downloader Bot {} {}{}!\n Send me a valid youtube link and I will send you the video.'.format(body.get('message').get('from').get('first_name'),body.get('message').get('from').get('last_name'),emojize(':grinning_face:'))
+        return_reply = 'Welcome to Youtube Downloader Bot! {} {}{}\n Send me a valid youtube link and I will send you the video.'.format(body.get('message').get('from').get('first_name'),body.get('message').get('from').get('last_name'),emojize(':grinning_face:'))
         regex_youtube = 'http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?'
         if re.search(regex_youtube,message):
             url = message.strip()
@@ -55,7 +55,7 @@ def introduction(request):
             bot.send_message(chat_id=chat_id, text=return_reply, parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=reply_to_message_id)
     except Exception as e :
         print (e)
-        return_reply = "Oops! Something went wrong{} Please try again".format(emojize(':slightly_frowning_face:'))
+        return_reply = "Oops! Something went wrong{} \nPlease try again".format(emojize(':slightly_frowning_face:'))
 
         return HttpResponse('okay')
 
