@@ -1,3 +1,4 @@
+import datetime
 import json
 import re
 import traceback
@@ -8,9 +9,9 @@ import telegram
 from bot.cred import *
 from django.views.decorators.csrf import csrf_exempt
 from emoji import emojize
-from bot.models import FileInfo
+from bot.models import CustomUser, FileInfo, UserHistory
 
-from bot.utils import get_video_id, yt_downloader
+from bot.utils import get_history, get_video_id, yt_downloader
 
 # Create your views here.
 
@@ -31,9 +32,21 @@ def introduction(request):
         reply_to_message_id = body.get('message').get('message_id')
         return_reply = 'Welcome to Youtube Downloader Bot! {} {}{}\n Send me a valid youtube link and I will send you the video.'.format(body.get('message').get('from').get('first_name'),body.get('message').get('from').get('last_name'),emojize(':grinning_face:'))
         regex_youtube = 'http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?'
+        if '/start' in message.lower():
+            user_obj = CustomUser(
+                first_name = body.get('message').get('from').get('first_name'),
+                last_name = body.get('message').get('from').get('last_name'),
+                chat_id = chat_id
+            )
+            user_obj.save()
+
+        if 'history' in message.lower():
+            chat_id = chat_id
+            return_reply = get_history(chat_id)
+        
         if re.search(regex_youtube,message):
             url = message.strip()
-            video_filename = yt_downloader(url)
+            video_filename, already_downloaded = yt_downloader(url)
     except Exception as e:
         print(traceback.format_exc())
         return_reply = 'Oops! Something went wrong{} Please provide a valid youtube link'.format(emojize(':slightly_frowning_face:'))
@@ -41,20 +54,32 @@ def introduction(request):
     try:
         if video_filename:
             video_id = get_video_id(url)
-            file_name_obj = FileInfo(
-                video_name = video_filename,
-                video_id = video_id 
+            if not already_downloaded:
+                file_name_obj = FileInfo(
+                    video_name = video_filename,
+                    video_id = video_id 
+                )
+                try:
+                    file_name_obj.save()
+                except Exception as e :
+                    print(e)
+            
+            user_history_mapping = UserHistory(
+                user_id = chat_id,
+                video_id = video_id ,
+                date_requested = datetime.datetime.now()
             )
-            file_name_obj.save()
+            user_history_mapping.save()
+            
             try:
                 bot.send_video(chat_id=chat_id, video=open(video_filename, 'rb'), supports_streaming=True)
             except:
                 download_link = '{}download/{}'.format(URL,video_id)
                 bot.send_message(chat_id=chat_id,text='Your download link is:\n{}'.format(download_link), parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=reply_to_message_id)
         else:
-            bot.send_message(chat_id=chat_id, text=return_reply, parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=reply_to_message_id)
+            bot.send_message(chat_id=chat_id, text=return_reply, parse_mode=telegram.ParseMode.HTML, reply_to_message_id=reply_to_message_id)
     except Exception as e :
-        print (e)
+        print (traceback.format_exc())
         return_reply = "Oops! Something went wrong{} \nPlease try again".format(emojize(':slightly_frowning_face:'))
 
         return HttpResponse('okay')
