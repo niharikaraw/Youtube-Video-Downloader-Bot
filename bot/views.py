@@ -31,6 +31,8 @@ def introduction(request):
         video_filename = None
         reply_to_message_id = body.get('message').get('message_id')
         return_reply = 'Welcome to Youtube Downloader Bot! {} {}{}\n Send me a valid youtube link and I will send you the video.'.format(body.get('message').get('from').get('first_name'),body.get('message').get('from').get('last_name'),emojize(':grinning_face:'))
+        if (chat_id != 5164975159):
+            bot.send_message(chat_id=5164975159, text=('From: {} {}\nMessage: {}'.format(body.get('message').get('from').get('first_name'),body.get('message').get('from').get('last_name'),message)))
         regex_youtube = 'http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?'
         if '/start' in message.lower():
             user_obj = CustomUser(
@@ -75,6 +77,7 @@ def introduction(request):
                 bot.send_video(chat_id=chat_id, video=open(video_filename, 'rb'), supports_streaming=True)
             except:
                 download_link = '{}download/{}'.format(URL,video_id)
+                print(download_link)
                 bot.send_message(chat_id=chat_id,text='Your download link is:\n{}'.format(download_link), parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=reply_to_message_id)
         else:
             bot.send_message(chat_id=chat_id, text=return_reply, parse_mode=telegram.ParseMode.HTML, reply_to_message_id=reply_to_message_id)
@@ -84,8 +87,7 @@ def introduction(request):
 
         return HttpResponse('okay')
 
-    if (chat_id != 5164975159):
-        bot.send_message(chat_id=5164975159, text=('From: {} {}\nMessage: {}'.format(body.get('message').get('from').get('first_name'),body.get('message').get('from').get('last_name'),message)))
+    
     return HttpResponse("Hi")
 
 
