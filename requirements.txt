@@ -10,3 +10,4 @@ gunicorn
 Werkzeug
 yt-dlp
 emoji
+psycopg2

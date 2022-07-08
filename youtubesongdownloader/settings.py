@@ -74,11 +74,32 @@ WSGI_APPLICATION = 'youtubesongdownloader.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
+'''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+
+}'''
+
+DATABASES = {
+
+    'default': {
+
+        'ENGINE': 'django.db.backends.postgresql',
+
+        'NAME': 'd16rp3lrbp11jp',
+
+        'USER': 'qoztwymchkzbdx',
+
+        'PASSWORD': '24779df4eefbb6ef8e4797b88c7c51f048d464679afb66084ac5f3d3ce10e700',
+
+        'HOST': 'ec2-3-226-163-72.compute-1.amazonaws.com',
+
+        'PORT': '5432',
+
+    }
+
 }
 
 
