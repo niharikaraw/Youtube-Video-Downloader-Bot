@@ -77,7 +77,7 @@ def introduction(request):
                 bot.send_video(chat_id=chat_id, video=open(video_filename, 'rb'), supports_streaming=True)
             except:
                 download_link = '{}download/{}'.format(URL,video_id)
-                print(download_link)
+                print('$$$$$$',download_link)
                 bot.send_message(chat_id=chat_id,text='Your download link is:\n{}'.format(download_link), parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=reply_to_message_id)
         else:
             bot.send_message(chat_id=chat_id, text=return_reply, parse_mode=telegram.ParseMode.HTML, reply_to_message_id=reply_to_message_id)
