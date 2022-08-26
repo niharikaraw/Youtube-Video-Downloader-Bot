@@ -1,13 +1,9 @@
 from distutils.log import error
 import subprocess
-
 from urllib.parse import parse_qs, urlparse
-
 from django.forms import model_to_dict
 from bot.cred import URL
-
 from bot.models import UserHistory
-
 
 def yt_downloader(url):
     print(url)
@@ -44,7 +40,6 @@ def get_video_id(url):
     else:
         raise ValueError
 
-#bot.send_message(chat_id=update.message.chat_id, text="<a href='https://www.google.com/'>Google</a>",parse_mode=ParseMode.HTML)
 def get_history(chat_id):
     video_history = UserHistory.objects.filter(user_id=chat_id).select_related('video')
     print(video_history)

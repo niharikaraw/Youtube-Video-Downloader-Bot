@@ -4,7 +4,6 @@ import re
 import traceback
 from django.forms import model_to_dict
 from django.http import HttpResponse
-from django.shortcuts import render
 import telegram
 from bot.cred import *
 from django.views.decorators.csrf import csrf_exempt
@@ -19,7 +18,7 @@ global bot
 global TOKEN
 TOKEN = bot_token
 bot = telegram.Bot(token= TOKEN)
-"{'update_id': 425632664, 'message': {'message_id': 9, 'from': {'id': 5164975159, 'is_bot': False, 'first_name': 'N', 'last_name': 'R', 'language_code': 'en'}, 'chat': {'id': 5164975159, 'first_name': 'N', 'last_name': 'R', 'type': 'private'}, 'date': 1656956377, 'text': 'Hi'}}"
+#{'update_id': 425632664, 'message': {'message_id': 9, 'from': {'id': 5164975159, 'is_bot': False, 'first_name': 'N', 'last_name': 'R', 'language_code': 'en'}, 'chat': {'id': 5164975159, 'first_name': 'N', 'last_name': 'R', 'type': 'private'}, 'date': 1656956377, 'text': 'Hi'}}"
 @csrf_exempt
 def introduction(request):
     try:
