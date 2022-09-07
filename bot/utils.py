@@ -1,7 +1,5 @@
-from distutils.log import error
 import subprocess
 from urllib.parse import parse_qs, urlparse
-from django.forms import model_to_dict
 from bot.cred import URL
 from bot.models import UserHistory
 
@@ -9,7 +7,7 @@ def yt_downloader(url):
     print(url)
     already_downloaded = False
     result = subprocess.Popen(['yt-dlp', url], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                   universal_newlines=True)
+                   universal_newlines=True)   #yt-dlp is an open source command line tool
     output, errors = result.communicate()
     print("*******",output)
     print(errors)
@@ -23,7 +21,8 @@ def yt_downloader(url):
         file_name = song_name.replace('[download] Destination: ','')
     return (file_name.strip(), already_downloaded)
 
-
+#sample https://www.youtube.com/watch?v=M9TzInCWVj0
+# https://youtu.be/83uZTH5OHGM
 def get_video_id(url):
     if url.startswith(('youtu', 'www')):
         url = 'http://' + url

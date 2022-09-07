@@ -6,7 +6,6 @@ class FileInfo(models.Model):
     video_name = models.TextField(null=True)
     video_id = models.CharField(max_length=255, unique=True, primary_key=True)
 
-
 class CustomUser(models.Model):
     first_name = models.CharField(max_length=255, null=True)
     last_name = models.CharField(max_length=255, null=True)
